@@ -1,0 +1,6 @@
+LOAD DATA INFILE 'C:\20220413_222848_AmericanCars.csv' 
+INTO TABLE cars_stage.ext_american_cars 
+FIELDS TERMINATED BY ';' 
+ENCLOSED BY '\''
+LINES TERMINATED BY '\r\n'
+IGNORE 1 ROWS
