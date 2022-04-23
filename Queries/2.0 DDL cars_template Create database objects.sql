@@ -14,7 +14,7 @@ CREATE TABLE `template_meta` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 ALTER TABLE `cars_template`.`template_meta` 
-ADD PRIMARY KEY (`tablename`, `columnname`);
+ADD PRIMARY KEY (`ordinal_position`,`tablename`, `columnname`);
 
 --
 -- Database: `cars_template`
@@ -188,7 +188,8 @@ DECLARE cur CURSOR FOR
 	SELECT `COLUMN_NAME`,`ORDINAL_POSITION` 
 	FROM `INFORMATION_SCHEMA`.`COLUMNS` 
 	WHERE `TABLE_SCHEMA`=databasename 
-	AND `TABLE_NAME`=tablename;
+	AND `TABLE_NAME`=tablename
+    ORDER BY `ORDINAL_POSITION` ;
 DECLARE CONTINUE HANDLER FOR NOT FOUND SET finished = 1;
 OPEN cur;
 		SET @sql = CONCAT('DELETE FROM template_meta WHERE tablename = "',tablename,'";');

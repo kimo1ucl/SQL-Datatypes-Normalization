@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 18, 2022 at 12:47 AM
+-- Generation Time: Apr 23, 2022 at 11:09 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -189,7 +189,8 @@ DECLARE cur CURSOR FOR
 	SELECT `COLUMN_NAME`,`ORDINAL_POSITION` 
 	FROM `INFORMATION_SCHEMA`.`COLUMNS` 
 	WHERE `TABLE_SCHEMA`=databasename 
-	AND `TABLE_NAME`=tablename;
+	AND `TABLE_NAME`=tablename
+    ORDER BY `ORDINAL_POSITION` ;
 DECLARE CONTINUE HANDLER FOR NOT FOUND SET finished = 1;
 OPEN cur;
 		SET @sql = CONCAT('DELETE FROM template_meta WHERE tablename = "',tablename,'";');
@@ -225,7 +226,7 @@ OPEN cur;
         SET @sql = concat(@sql,' WHERE `', _columnname, '` IS NULL OR `', _columnname, '` = '''' )');
         SET @sql = concat(@sql,' WHERE tablename = ','''', tablename, '''', ' AND columnname = ', '''', _columnname,'''',  ';');
         #use for debug
-		SELECT @sql;
+		#SELECT @sql;
         PREPARE cmd FROM @sql ; 
 		EXECUTE cmd; 
 		DEALLOCATE PREPARE cmd ;
@@ -260,23 +261,23 @@ CREATE TABLE `template_meta` (
 --
 
 INSERT INTO `template_meta` (`tablename`, `columnname`, `ordinal_position`, `datatype`, `min_length`, `max_length`, `count_blanks`, `dimension`) VALUES
-('ext_american_cars', 'data-bodystyle', 12, 'varchar', 7, 23, 0, 30),
-('ext_american_cars', 'data-engine', 9, 'varchar', 4, 40, 0, 50),
-('ext_american_cars', 'data-extcolor', 5, 'varchar', 0, 41, 6, 50),
-('ext_american_cars', 'data-fueltype', 10, 'varchar', 9, 13, 0, 13),
-('ext_american_cars', 'data-intcolor', 6, 'varchar', 0, 26, 39, 50),
 ('ext_american_cars', 'data-make', 1, 'varchar', 3, 10, 0, 15),
 ('ext_american_cars', 'data-model', 2, 'varchar', 2, 21, 0, 30),
+('ext_american_cars', 'data-year', 3, 'INT', 4, 4, 0, NULL),
+('ext_american_cars', 'data-trim', 4, 'varchar', 1, 27, 0, 35),
+('ext_american_cars', 'data-extcolor', 5, 'varchar', 0, 41, 6, 50),
+('ext_american_cars', 'data-intcolor', 6, 'varchar', 0, 26, 39, 50),
+('ext_american_cars', 'data-trans', 7, 'varchar', 0, 9, 1, 10),
+('ext_american_cars', 'data-price', 8, 'INT', 1, 5, 0, NULL),
+('ext_american_cars', 'data-engine', 9, 'varchar', 4, 40, 0, 50),
+('ext_american_cars', 'data-fueltype', 10, 'varchar', 9, 13, 0, 13),
+('ext_american_cars', 'data-vehicletype', 11, 'varchar', 4, 4, 0, 4),
+('ext_american_cars', 'data-bodystyle', 12, 'varchar', 7, 23, 0, 30),
+('ext_american_cars', 'data-name', 13, 'varchar', 11, 51, 0, 100),
+('ext_american_cars', 'data-vin', 14, 'char', 17, 17, 0, 17),
 ('ext_american_cars', 'data-modelcode', 15, 'varchar', 0, 11, 4, 11),
 ('ext_american_cars', 'data-msrp', 16, 'varchar', 1, 5, 0, 5),
-('ext_american_cars', 'data-name', 13, 'varchar', 11, 51, 0, 100),
-('ext_american_cars', 'data-price', 8, 'int', 1, 5, 0, NULL),
-('ext_american_cars', 'data-stocknum', 17, 'varchar', 6, 6, 0, 6),
-('ext_american_cars', 'data-trans', 7, 'varchar', 0, 9, 1, 10),
-('ext_american_cars', 'data-trim', 4, 'varchar', 1, 27, 0, 35),
-('ext_american_cars', 'data-vehicletype', 11, 'varchar', 4, 4, 0, 4),
-('ext_american_cars', 'data-vin', 14, 'char', 17, 17, 0, 17),
-('ext_american_cars', 'data-year', 3, 'int', 4, 4, 0, NULL);
+('ext_american_cars', 'data-stocknum', 17, 'varchar', 6, 6, 0, 6);
 
 --
 -- Indexes for dumped tables
@@ -286,7 +287,7 @@ INSERT INTO `template_meta` (`tablename`, `columnname`, `ordinal_position`, `dat
 -- Indexes for table `template_meta`
 --
 ALTER TABLE `template_meta`
-  ADD PRIMARY KEY (`tablename`,`columnname`);
+  ADD PRIMARY KEY (`ordinal_position`,`tablename`,`columnname`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
