@@ -1,3 +1,4 @@
+SET FOREIGN_KEY_CHECKS = 0;
 
 TRUNCATE TABLE `cars_rdbms_business_keys`.`make`;
 INSERT INTO `cars_rdbms_business_keys`.`make`
@@ -63,3 +64,4 @@ SELECT `dat_american_cars`.`data-make`,
     `dat_american_cars`.`data-msrp`,
     `dat_american_cars`.`data-stocknum`
 FROM `cars_stage`.`dat_american_cars`;
+SET FOREIGN_KEY_CHECKS = 1;
